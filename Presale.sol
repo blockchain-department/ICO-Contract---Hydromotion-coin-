@@ -7,8 +7,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract Presale {
     AggregatorV3Interface internal priceFeed;
 
-    string public _name = "Hydromotion coin";
-    string public _symbol = "HYM";
     uint256 public immutable minBuy = 10;
     uint256 maxSupply = 50000000000 * 10**2;
 
