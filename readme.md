@@ -38,7 +38,7 @@
 ------------
 
 
-####**-- Struct**
+#### **-- Struct**
 
 **1. timestampInfo {
     uint256 tokens;
@@ -52,7 +52,7 @@
 ------------
 
 
-####**-- Mappings**
+#### **-- Mappings**
 
 **1. mapping(address => timestampInfo[]) storeTimeInfo;**
 >     store array of structure timestampInfo of every user
@@ -92,6 +92,6 @@
 **6. checkStructArray**
 >-    return mapping of msg.sender
 
-##**-------E R C - 2 0   C O N T R A C T-------**
+## **-------E R C - 2 0   C O N T R A C T-------**
 
 > this is standard erc20 contract followed by OpenZeppelin standard with additional change is transfer and transferFrom functions by overriding them so they are only can be called by PRESALE contract which can be defined with another custom function which sets address of presale smartcontract in a new variable and that variable use to check if transfer functions are called by that contract address.
