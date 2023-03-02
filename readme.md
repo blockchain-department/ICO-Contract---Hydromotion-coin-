@@ -2,34 +2,25 @@
 
 #### **-- variables**
 
-**1.  _name = "Hydromotion coin"**
->         name of Token
-
-**2. _symbol = "HYM"**
->      symbol of Token
-
-**3. minBuy = 10**
+**1. minBuy = 10**
 >        mimimum amount if Tokens any user can mint.
 
-**4. maxSupply = 50000000000 * 10**2**
+**2. maxSupply = 50000000000 * 10**2**
 >        Maximum amount of tokens users can ever mint.
 
-**5. uint256 totalBought**
+**3. totalBought**
 >        store total amount of tokens that are already minted.
 
-**6. _deployTime**
->        store time when contract deployed.
-
-**7. eur_to_usdPrice**
+**4. eur_to_usdPrice**
 >        return price of 1 euro in dolor 
 
-**8. erc20Address**
+**5. erc20Address**
 >        store address of erc20Tokken contract
 
-**9. erc20ContractOwner**
+**6. OwnerIs**
 >        store address of owner of both contracts
 
-**10. currentPriceFor1**
+**7. currentPriceFor1**
 >        return price of 1 token in euro
 
 ------------
@@ -57,6 +48,10 @@
 **1. mapping(address => timestampInfo[]) storeTimeInfo;**
 >     store array of structure timestampInfo of every user
 
+**2. mapping(address => uint256) withdrawAble;**
+>     store available tokens to sell.
+
+
 ------------
 
 ------------
@@ -66,6 +61,7 @@
 **1. CurrentPrice**
 >    - calculate the current price required to mint 1 token in wei which will be equalant to very aproximately 0.01 euro for round 1. 
    - it can change when new round starts acordingly. 
+   - returns the current price.
 
 **2. getEURtoUSDPrice**
 >    it calculate price of 1 euro into usd
@@ -80,17 +76,24 @@
 -    update totalBought
 
 **4. sell**
->-    user not allowed to call this function if the contract deployed time + minimum required time to transfer function.
--    check if user have enough tokens is his account
+>-    check if user have enough tokens is his account
 -    check if his required time to mint the contract is passed.
--    update the mapping. 
+-    update withdraw, storeTimeInfo mapping.
+-    sell the tokens if withdraw is not empty.
 
-**5. getFunds**
+**5. withdraw**
 >-    transfer funds from contract to owner account
 
 
 **6. checkStructArray**
 >-    return mapping of msg.sender
+
+**6. ownerBuy**
+>-    can be called by only Owner
+-    totalbought must not be exceded by maxSupply
+-    transfer tokens to given address.
+-    no value pass required.
+
 
 ## **-------E R C - 2 0   C O N T R A C T-------**
 
