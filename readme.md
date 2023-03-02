@@ -2,12 +2,10 @@
 
 #### **-- variables**
 
-**1.  _name = "Hydromotion coin"
-**
+**1.  _name = "Hydromotion coin"**
 >         name of Token
 
-**2. _symbol = "HYM"
-**
+**2. _symbol = "HYM"**
 >      symbol of Token
 
 **3. minBuy = 10**
