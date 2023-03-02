@@ -75,7 +75,7 @@
 -    update mapping 
 -    update totalBought
 
-**4. sell**
+**4. transfer**
 >-    check if user have enough tokens is his account
 -    check if his required time to mint the contract is passed.
 -    update withdraw, storeTimeInfo mapping.
