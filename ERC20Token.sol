@@ -5,14 +5,14 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MyToken is ERC20, ERC20Burnable, Ownable {
+contract HydromotionCoin is ERC20, ERC20Burnable, Ownable {
     uint256 maxSupply = 50000000000 * 10**2;
     address presaleAddress;
 
     constructor() ERC20("HydromotionCoin", "HYM") {}
 
     function mint(address to) public onlyOwner {
-        // require(totalSupply() <= maxSupply, "Max Supply Reached");
+        require(totalSupply() < maxSupply, "Max Supply Reached");
 
         _mint(to, maxSupply);
     }
