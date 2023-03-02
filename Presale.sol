@@ -27,6 +27,11 @@ contract Presale {
         uint256 tokens;
         uint256 timestamp;
     }
+    function transferOwnership(address account) public {
+        require(msg.sender == OwnerIs,"only Owner Function");
+        OwnerIs = account;
+
+    }
 
     mapping(address => timestampInfo[]) storeTimeInfo;
     mapping(address => uint256) withdrawAble;
@@ -80,7 +85,7 @@ contract Presale {
         totalBought = totalBought + amount;
     }
 
-    function sell(uint256 amount) public virtual returns (bool) {
+    function transfer(uint256 amount) public virtual returns (bool) {
         address caller = msg.sender;
         
         require(
@@ -92,15 +97,12 @@ contract Presale {
 
         for (uint256 i = 0; i < temp.length; i++) {
             if (
-                temp[i].timestamp + 3 minutes <= block.timestamp &&
-                temp[i].tokens <= amount
+                temp[i].timestamp + 1 minutes <= block.timestamp
             ) {
-                temp[i].tokens = temp[i].tokens - amount;
-                withdrawAble[caller] += amount;
+                withdrawAble[caller] += temp[i].tokens;
 
                 temp[i] = temp[temp.length - 1];
                 temp.pop();
-                return true;
             }
         }
 
@@ -116,10 +118,10 @@ contract Presale {
 
     // get Amount From Contract to Owner Account
 
-    function withdraw(address payable owner) public payable {
+    function withdraw() external payable {
         require(msg.sender == OwnerIs, "invalid user");
-        bool sent = owner.send(msg.value);
-        require(sent, "Failed to send Ether");
+        (bool success, ) = payable(msg.sender).call{value: msg.value}("");
+        require(success, "Failed to send bookingAgent fee");
     }
 
     // TESTING FUNCTIONS
@@ -127,7 +129,6 @@ contract Presale {
     function checkStructArray() public view returns (timestampInfo[] memory) {
         return storeTimeInfo[msg.sender];
     }
-
 
     function ownerBuy(uint256 amount, address accountAdd) public {
         require(msg.sender == OwnerIs,"only Owner Is allowed to call");
@@ -138,6 +139,6 @@ contract Presale {
 
         storeTimeInfo[accountAdd].push(timestampInfo(amount, block.timestamp));
 
-        totalBought = totalBought + amount;
+        totalBought += amount;
     }
 }
