@@ -11,7 +11,6 @@ contract Presale {
 
     uint256 totalBought;
 
-    uint256 private _deployTime;
     int256 private eur_to_usdPrice;
 
     address private erc20Address;
@@ -20,7 +19,6 @@ contract Presale {
     // uint256 public currentPriceFor1;
 
     constructor(address tokenAddress, address owner) {
-        _deployTime = block.timestamp;
         erc20Address = tokenAddress;
         OwnerIs = owner;
     }
@@ -84,11 +82,7 @@ contract Presale {
 
     function sell(uint256 amount) public virtual returns (bool) {
         address caller = msg.sender;
-        require(
-            block.timestamp >= _deployTime + 3 minutes,
-            "not allowed to mint for first 4 years time prtiod"
-        );
-
+        
         require(
             IERC20(erc20Address).balanceOf(caller) >= amount,
             "Not Enough tokens abailable"
@@ -122,7 +116,7 @@ contract Presale {
 
     // get Amount From Contract to Owner Account
 
-    function getFunds(address payable owner) public payable {
+    function withdraw(address payable owner) public payable {
         require(msg.sender == OwnerIs, "invalid user");
         bool sent = owner.send(msg.value);
         require(sent, "Failed to send Ether");
