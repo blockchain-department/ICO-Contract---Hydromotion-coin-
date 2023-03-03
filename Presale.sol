@@ -74,9 +74,9 @@ contract Presale {
         require(amount >= minBuy, "Low Amount Pass");
 
         require(msg.value >= (CurrentPrice() * (amount/10**2)), "Low Value Pass");
-        IERC20(erc20Address).transfer(caller, (amount * 10**2));
+        IERC20(erc20Address).transfer(caller, (amount));
 
-        storeTimeInfo[caller].push(timestampInfo((amount * 10**2), block.timestamp));
+        storeTimeInfo[caller].push(timestampInfo((amount), block.timestamp));
 
         totalBought = totalBought + (amount);
     }
