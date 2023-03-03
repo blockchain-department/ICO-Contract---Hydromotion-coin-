@@ -6,15 +6,21 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract HydromotionCoin is ERC20, ERC20Burnable, Ownable {
-    uint256 maxSupply = 50000000000 * 10**2;
+    uint256 initialSupply = 50000000000 * 10**2;
     address presaleAddress;
 
-    constructor() ERC20("HydromotionCoin", "HYM") {}
+    constructor(address presaleContract) ERC20("HydromotionCoin", "HYM") {
+        presaleAddress = presaleContract;
+        _mint(presaleContract, initialSupply);
+    }
 
-    function mint(address to) public onlyOwner {
-        require(totalSupply() < maxSupply, "Max Supply Reached");
+    function mint(address to, uint256 amount) public {
+        require(
+            msg.sender == presaleAddress,
+            "Only Called with Presale Smart Contract"
+        );
 
-        _mint(to, maxSupply);
+        _mint(to, amount);
     }
 
     function transfer(address to, uint256 amount)
@@ -24,8 +30,8 @@ contract HydromotionCoin is ERC20, ERC20Burnable, Ownable {
         returns (bool)
     {
         require(
-            msg.sender == presaleAddress,
-            "Only Called with Presale Smart Contract"
+            msg.sender == presaleAddress || msg.sender == owner(),
+            "Only Called with Presale Smart Contract or Owner"
         );
         address owner = _msgSender();
         _transfer(owner, to, amount);
@@ -38,8 +44,8 @@ contract HydromotionCoin is ERC20, ERC20Burnable, Ownable {
         uint256 amount
     ) public virtual override returns (bool) {
         require(
-            msg.sender == presaleAddress,
-            "Only Called with Presale Smart Contract"
+            msg.sender == presaleAddress || msg.sender == owner(),
+            "Only Called with Presale Smart Contract or Owner"
         );
         address spender = _msgSender();
         _spendAllowance(from, spender, amount);
@@ -49,5 +55,9 @@ contract HydromotionCoin is ERC20, ERC20Burnable, Ownable {
 
     function setPresaleAddress(address add) public onlyOwner {
         presaleAddress = add;
+    }
+
+    function decimals() public view virtual override returns (uint8) {
+        return 2;
     }
 }
