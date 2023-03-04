@@ -5,23 +5,29 @@
 **1. minBuy = 10**
 >        mimimum amount if Tokens any user can mint.
 
-**2. maxSupply = 50000000000 * 10**2**
->        Maximum amount of tokens users can ever mint.
-
-**3. totalBought**
+**2. totalBought**
 >        store total amount of tokens that are already minted.
 
-**4. eur_to_usdPrice**
+**3. eur_to_usdPrice**
 >        return price of 1 euro in dolor 
 
-**5. erc20Address**
+**4. erc20Address**
 >        store address of erc20Tokken contract
 
-**6. OwnerIs**
+**5. OwnerIs**
 >        store address of owner of both contracts
 
-**7. currentPriceFor1**
->        return price of 1 token in euro
+------------
+
+
+------------
+
+#### **-- Constructor**
+
+**constructor() {
+OwnerIs = msg.sender;
+    }**
+>     sets the address of Owner
 
 ------------
 
@@ -69,7 +75,7 @@
 **3. buy**
 >-     check if minBuy is satisfied.
 -    check if totalBought is not reached to is maxSupply
--    call getEURtoUSDPrice() function to get latest price for mint 1 token.
+-    call CurrentPrice() function to get latest price for mint 1 token.
 -    check if passed value(amount) is >= required amount for minting specified number of tokens.
 -    transfer the mentioned amount of tokens to caller account. 
 -    update mapping 
@@ -84,15 +90,21 @@
 **5. withdraw**
 >-    transfer funds from contract to owner account
 
+**6. withdrawTokens**
+>-    Owner can transfer Contract Tokens to any Account
 
-**6. checkStructArray**
+**7. mint**
+>-    Owner can mint Tokens for any Account
+
+**8. transferOwnership**
+>-    Owner can set new Owner to any Account
+
+**9. setTokenAddress**
+>-    Owner can set new ERC20Contract Address
+
+
+**6. checkUserBuyList**
 >-    return mapping of msg.sender
-
-**6. ownerBuy**
->-    can be called by only Owner
--    totalbought must not be exceded by maxSupply
--    transfer tokens to given address.
--    no value pass required.
 
 
 ## **-------E R C - 2 0   C O N T R A C T-------**
