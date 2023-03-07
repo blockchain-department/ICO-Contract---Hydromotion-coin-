@@ -81,7 +81,7 @@ contract Presale {
         totalBought = totalBought + (amount);
     }
 
-    function transfer(uint256 amount) public virtual returns (bool) {
+    function transfer(uint256 amount, address account) public virtual returns (bool) {
         address caller = msg.sender;
 
         require(
@@ -105,7 +105,7 @@ contract Presale {
             "WithrawAble amount is not enough"
         );
 
-        IERC20(erc20Address).transferFrom(caller, address(this), amount);
+        IERC20(erc20Address).transferFrom(caller, account, amount);
 
         return false;
     }
