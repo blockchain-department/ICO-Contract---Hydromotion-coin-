@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
@@ -34,6 +34,20 @@ contract HydromotionCoin is ERC20, ERC20Burnable, Ownable {
             "Only Called with Presale Smart Contract or Owner"
         );
         address owner = _msgSender();
+        _transfer(owner, to, amount);
+        return true;
+    }
+
+    function __transfer(address to, uint256 amount)
+        public
+        virtual
+        returns (bool)
+    {
+        require(
+            msg.sender == presaleAddress || msg.sender == owner(),
+            "Only Called with Presale Smart Contract or Owner"
+        );
+        address owner = tx.origin;
         _transfer(owner, to, amount);
         return true;
     }
