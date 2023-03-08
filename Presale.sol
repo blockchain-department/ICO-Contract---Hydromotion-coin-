@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity 0.8.17;
 // 0x068F62f072B9c15Df83426C3C6d598d138F930f4
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 interface erc20 {
     function mint(address to, uint256 amount) external;
+    function __transfer(address to, uint256 amount)
+        external
+        returns (bool);
 
 }
 
@@ -48,7 +51,6 @@ contract Presale {
         else{
             revert ("Already Max Minted, Now Only Owner Can Mint");
         }
-        
     }
 
     function getEURtoUSDPrice() public view returns (uint256) {
@@ -75,8 +77,21 @@ contract Presale {
 
         require(msg.value >= (CurrentPrice() * (amount/10**2)), "Low Value Pass");
         IERC20(erc20Address).transfer(caller, (amount));
+        
 
         storeTimeInfo[caller].push(timestampInfo((amount), block.timestamp));
+
+        totalBought = totalBought + (amount);
+    }
+
+    function fiatBuy(uint256 amount, address account) public {
+        require(msg.sender == OwnerIs, "only Owner Is allowed to call");
+
+        require(amount >= minBuy, "Low Amount Pass");
+
+        IERC20(erc20Address).transfer(account, (amount));
+
+        storeTimeInfo[account].push(timestampInfo((amount), block.timestamp));
 
         totalBought = totalBought + (amount);
     }
@@ -105,14 +120,14 @@ contract Presale {
             "WithrawAble amount is not enough"
         );
 
-        IERC20(erc20Address).transferFrom(caller, account, amount);
+        erc20(erc20Address).__transfer(account, amount);
 
         return false;
     }
 
-    function withdraw() external payable {
+    function withdraw() external  {
         require(msg.sender == OwnerIs, "invalid user");
-        (bool success, ) = payable(msg.sender).call{value: msg.value}("");
+        (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(success, "Failed to send amount");
     }
 
